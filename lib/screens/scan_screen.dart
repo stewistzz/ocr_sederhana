@@ -62,6 +62,7 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   Future<void> _takePicture() async {
+    // function take picture
     try {
       await _initializeControllerFuture;
 
@@ -87,10 +88,16 @@ class _ScanScreenState extends State<ScanScreen> {
         MaterialPageRoute(builder: (_) => ResultScreen(ocrText: ocrText)),
       );
     } catch (e) {
+      // menangani error, dilakukan modifikasi
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error saat mengambil / memproses foto: $e')),
+        // pesan yang akan dimodifikasi
+        SnackBar(
+          content: Text(
+            'Pemindaian Gagal! Periksa Izin Kamera atau coba lagi.',
+          ),
+        ), // modifikasi pesan error dan hilangkan ($e)
       );
     }
   }
@@ -98,7 +105,24 @@ class _ScanScreenState extends State<ScanScreen> {
   @override
   Widget build(BuildContext context) {
     if (!_controller.value.isInitialized) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(
+        backgroundColor: Colors.grey[900], // menambahkan background gelap
+        body: const Center(
+          child: Column(
+            // bungkus dengan column untuk menambah teks
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Colors.yellow,
+              ), // ubah warna indikator
+              Text(
+                'Memuat Kamera...',
+                style: TextStyle(color: Colors.white),
+              ), // teks dengan warna putih
+            ],
+          ),
+        ),
+      );
     }
 
     return Scaffold(
