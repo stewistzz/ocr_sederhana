@@ -25,3 +25,5 @@ samples, guidance on mobile development, and a full API reference.
 ![Teks alternatif](images/1.3%20uts%20mobile.jpg)
 4. Konversi Widget dan Inisialisasi:
 ![Teks alternatif](images/1.4%20uts%20mobile.png)
+5. Eror handling:
+![Teks alternatif](images/1.5%20uts%20mobile%20revisi.jpg)
