@@ -62,42 +62,68 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   Future<void> _takePicture() async {
-    // function take picture
     try {
       await _initializeControllerFuture;
 
       if (!mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Memproses OCR, mohon tunggu...'),
-
           duration: Duration(seconds: 2),
         ),
       );
 
-      final XFile image = await _controller.takePicture();
+      // Pastikan controller terinisialisasi
+      if (!_controller.value.isInitialized) {
+        // function untuk mengecek inisialisasi controller dari kamera
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Kamera belum siap, coba lagi.')),
+        );
+        return;
+      }
 
+      // melakukan pengambilan gambar, menyimpan ke XFile dengan memodifikasi XFile? image = await _controller.takePicture();
+      final XFile? image = await _controller.takePicture();
+
+      // Cek apakah gambar null atau tidak
+      if (image == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Pemindaian Gagal! Tidak ada gambar yang ditangkap.'),
+          ),
+        );
+        return;
+      }
+
+      // Proses OCR dari file gambar yang diambil
       final ocrText = await _ocrFromFile(File(image.path));
 
-      if (!mounted) return;
+      if (!mounted) return; // Cek apakah widget masih terpasang
 
+      if (ocrText.isEmpty) {
+        // Cek jika teks OCR kosong
+        ScaffoldMessenger.of(context).showSnackBar(
+          // tampilkan snackbar
+          const SnackBar(
+            content: Text('Pemindaian Gagal! Tidak ada teks terdeteksi.'),
+          ),
+        );
+        return;
+      }
+
+      // Jika berhasil, pindah ke ResultScreen
       Navigator.push(
         context,
-
         MaterialPageRoute(builder: (_) => ResultScreen(ocrText: ocrText)),
       );
-    } catch (e) {
-      // menangani error, dilakukan modifikasi
+    } catch (_) {
       if (!mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
-        // pesan yang akan dimodifikasi
-        SnackBar(
+        const SnackBar(
           content: Text(
             'Pemindaian Gagal! Periksa Izin Kamera atau coba lagi.',
           ),
-        ), // modifikasi pesan error dan hilangkan ($e)
+        ),
       );
     }
   }
