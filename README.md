@@ -20,10 +20,8 @@ samples, guidance on mobile development, and a full API reference.
 1. Pengubahan Navigasi Home
 ![Teks alternatif](images/1.1%20uts%20mobile.jpg)
 2. Teks Utuh dan Navigasi Balik
-
-
-3. 
-4. 
-
-5.
-6.
+![Teks alternatif](images/1.2%20uts%20mobile.jpg)
+3. Custom Loading Screen di ScanScreen:
+![Teks alternatif](images/1.3%20uts%20mobile.jpg)
+4. Konversi Widget dan Inisialisasi:
+![Teks alternatif](images/1.4%20uts%20mobile.png)
